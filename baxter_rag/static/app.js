@@ -736,17 +736,39 @@ function renderDataSettings() {
   const settings = state.settings || {};
   const inventory = settings.inventory?.summary || {};
   const index = settings.index || {};
+  const evaluation = settings.evaluation || {};
+  const seed = evaluation.seed || {};
+  const audit = evaluation.audit || {};
+  const auditRootCause = evaluation.root_cause?.audit?.counts || {};
+  const auditRootCauseText = Object.keys(auditRootCause).length ? JSON.stringify(auditRootCause) : "none";
   panel.innerHTML = `
     <div class="settings-section settings-form wide">
       <div class="settings-kpis">
         <div><span>Documents</span><strong>${escapeHtml(inventory.document_count || 0)}</strong></div>
         <div><span>Chunks</span><strong>${escapeHtml(index.chunk_count || 0)}</strong></div>
         <div><span>Workspaces</span><strong>${escapeHtml((settings.workspaces || []).length)}</strong></div>
+        <div><span>Seed eval</span><strong>${escapeHtml(seed.passed || 0)}/${escapeHtml(seed.case_count || 0)}</strong></div>
+        <div><span>Audit eval</span><strong>${escapeHtml(audit.passed || 0)}/${escapeHtml(audit.case_count || 0)}</strong></div>
+        <div><span>Audit root cause</span><strong>${escapeHtml(auditRootCauseText)}</strong></div>
       </div>
       <div class="status-table">
         <div><span>Inventory report</span><strong>${escapeHtml(Boolean(settings.inventory && Object.keys(settings.inventory).length))}</strong></div>
         <div><span>Index generated</span><strong>${escapeHtml(index.generated_at || "not available")}</strong></div>
         <div><span>Qdrant</span><strong>${escapeHtml(index.qdrant?.enabled ? "enabled" : "disabled")}</strong></div>
+        <div><span>Seed eval generated</span><strong>${escapeHtml(seed.generated_at || "not available")}</strong></div>
+        <div><span>Audit eval generated</span><strong>${escapeHtml(audit.generated_at || "not available")}</strong></div>
+        <div><span>Audit pass rate</span><strong>${escapeHtml(audit.pass_rate ?? "not available")}</strong></div>
+      </div>
+      <div class="settings-kpis">
+        <label class="field">
+          <span>Audit count</span>
+          <input id="auditEvalCount" type="number" min="12" max="300" value="${escapeHtml(audit.case_count || 144)}" />
+        </label>
+        <label class="field">
+          <span>Audit seed</span>
+          <input id="auditEvalSeed" type="number" min="1" value="20260621" />
+        </label>
+        <div><span>Audit suite</span><strong>index random</strong></div>
       </div>
       <div class="button-row">
         <button class="primary-action" id="settingsInventoryBtn" type="button">
@@ -760,6 +782,18 @@ function renderDataSettings() {
         <button class="secondary-action" id="settingsRefreshBtn" type="button">
           <i data-lucide="refresh-cw"></i>
           <span>Refresh</span>
+        </button>
+        <button class="secondary-action" id="settingsEvalRunBtn" type="button">
+          <i data-lucide="list-checks"></i>
+          <span>Seed Eval</span>
+        </button>
+        <button class="secondary-action" id="settingsEvalAuditBtn" type="button">
+          <i data-lucide="shield-check"></i>
+          <span>Audit Eval</span>
+        </button>
+        <button class="secondary-action" id="settingsPipelineBtn" type="button">
+          <i data-lucide="workflow"></i>
+          <span>Pipeline</span>
         </button>
       </div>
     </div>
@@ -779,17 +813,70 @@ function renderDataSettings() {
     await loadSettings();
     renderSettings();
   });
+  qs("#settingsEvalRunBtn").addEventListener("click", async () => {
+    await runPipelineStep("Seed eval", "/api/eval/run", {});
+    await loadSettings();
+    renderSettings();
+  });
+  qs("#settingsEvalAuditBtn").addEventListener("click", async () => {
+    await runPipelineStep("Audit eval", "/api/eval/audit", auditEvalBody());
+    await loadSettings();
+    renderSettings();
+  });
+  qs("#settingsPipelineBtn").addEventListener("click", async () => {
+    await runPipelineStep("Pipeline", "/api/pipeline/run", {
+      eval_audit_count: Number(qs("#auditEvalCount")?.value || 144),
+      enable_eval_audit: true,
+    });
+    await loadSettings();
+    renderSettings();
+  });
 }
 
 async function runPipelineStep(label, path, body = {}) {
   addMessage({ role: "system", text: `${label} started...` });
   try {
     const payload = await api(path, { method: "POST", body: JSON.stringify(body) });
-    addMessage({ role: "system", text: `${label} finished.\n${JSON.stringify(payload.summary || payload, null, 2)}` });
+    addMessage({ role: "system", text: `${label} finished.\n${JSON.stringify(compactStepPayload(payload), null, 2)}` });
     await refreshStatus();
   } catch (error) {
     addMessage({ role: "system", text: `${label} error: ${error.message}` });
   }
+}
+
+function auditEvalBody() {
+  return {
+    count: Number(qs("#auditEvalCount")?.value || 144),
+    seed: Number(qs("#auditEvalSeed")?.value || 20260621),
+  };
+}
+
+function compactStepPayload(payload) {
+  if (payload.summary) return payload.summary;
+  if (payload.case_count !== undefined || payload.pass_rate !== undefined) {
+    return {
+      suite: payload.suite,
+      case_count: payload.case_count,
+      passed: payload.passed,
+      failed: payload.failed,
+      pass_rate: payload.pass_rate,
+      root_cause_counts: payload.root_cause_counts,
+      path: payload.path,
+      root_cause_path: payload.root_cause_path,
+    };
+  }
+  if (payload.status && Array.isArray(payload.stages)) {
+    return {
+      status: payload.status,
+      run_id: payload.run_id,
+      pipeline_quality_score: payload.final_snapshot?.pipeline_quality_score,
+      eval_pass_rate: payload.final_snapshot?.eval_pass_rate,
+      eval_audit_pass_rate: payload.final_snapshot?.eval_audit_pass_rate,
+      stage_counts: payload.stage_counts,
+      report_markdown: payload.report_markdown,
+    };
+  }
+  return payload;
 }
 
 function clearThread() {

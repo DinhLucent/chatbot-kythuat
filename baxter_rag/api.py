@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 
 from .chat import ask, create_session, source_preview
 from .conversion import convert_manifest
-from .evaluation import generate_seed_cases, run_eval
+from .evaluation import generate_seed_cases, run_eval, run_eval_audit
 from .inventory import run_inventory
 from .llm import DEFAULT_LLM_MODEL, OpenAICompatibleLLM, is_local_llm_endpoint, safe_base_url
 from .model_profile import model_profile_payload
@@ -109,6 +109,9 @@ class PipelineRunRequest(BaseModel):
     rebuild: bool = True
     eval_count: int = 96
     eval_limit: int | None = None
+    eval_audit_count: int = 144
+    eval_audit_limit: int | None = None
+    enable_eval_audit: bool = True
     enable_paddleocr: bool | None = None
     enable_hyper_extract: bool | None = None
     enable_llm_review: bool | None = None
@@ -122,6 +125,13 @@ class QualityAuditRequest(BaseModel):
     include_low_risk: bool = True
     max_chunk_issues_per_doc: int = 40
     strict: bool = False
+
+
+class EvalAuditRequest(BaseModel):
+    count: int = 144
+    seed: int = 20260621
+    cases_path: str | None = None
+    limit: int | None = None
 
 
 class SemanticReviewRequest(BaseModel):
@@ -241,8 +251,45 @@ def settings_payload() -> dict[str, Any]:
         },
         "inventory": inventory,
         "index": index,
+        "evaluation": evaluation_payload(s),
         "model_profile": model_profile_payload(index),
         "workspaces": list_source_workspaces(),
+    }
+
+
+def evaluation_payload(s: Settings) -> dict[str, Any]:
+    seed = read_json(s.root / "eval" / "baxter_eval_latest.json", {})
+    audit = read_json(s.artifacts_dir / "evaluation" / "audit_latest.json", {})
+    seed_root = read_json(s.artifacts_dir / "root_cause" / "seed_eval_latest_root_cause.json", {})
+    audit_root = read_json(s.artifacts_dir / "root_cause" / "audit_eval_latest_root_cause.json", {})
+    return {
+        "seed": compact_eval_summary(seed),
+        "audit": compact_eval_summary(audit),
+        "root_cause": {
+            "seed": {
+                "counts": seed_root.get("counts", {}),
+                "failed": seed_root.get("failed"),
+                "path": str(s.artifacts_dir / "root_cause" / "seed_eval_latest_root_cause.json"),
+            },
+            "audit": {
+                "counts": audit_root.get("counts", {}),
+                "failed": audit_root.get("failed"),
+                "path": str(s.artifacts_dir / "root_cause" / "audit_eval_latest_root_cause.json"),
+            },
+        },
+    }
+
+
+def compact_eval_summary(payload: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "generated_at": payload.get("generated_at"),
+        "suite": payload.get("suite"),
+        "case_count": payload.get("case_count", 0),
+        "passed": payload.get("passed", 0),
+        "failed": payload.get("failed", 0),
+        "pass_rate": payload.get("pass_rate"),
+        "path": payload.get("path"),
+        "root_cause_path": payload.get("root_cause_path"),
     }
 
 
@@ -261,6 +308,7 @@ def status() -> dict[str, Any]:
         "llm": payload["llm"],
         "inventory": payload["inventory"],
         "index": payload["index"],
+        "evaluation": payload["evaluation"],
         "workspaces": payload["workspaces"],
     }
 
@@ -422,6 +470,22 @@ def api_eval_run(limit: int | None = None) -> dict[str, Any]:
     return run_eval(settings(), limit=limit)
 
 
+@app.post("/api/eval/audit")
+def api_eval_audit(payload: EvalAuditRequest) -> dict[str, Any]:
+    return run_eval_audit(
+        settings(),
+        count=payload.count,
+        seed=payload.seed,
+        cases_path=Path(payload.cases_path) if payload.cases_path else None,
+        limit=payload.limit,
+    )
+
+
+@app.get("/api/eval/audit/latest")
+def api_eval_audit_latest() -> dict[str, Any]:
+    return read_json(settings().artifacts_dir / "evaluation" / "audit_latest.json", {})
+
+
 @app.post("/api/pipeline/run")
 def api_pipeline_run(payload: PipelineRunRequest) -> dict[str, Any]:
     return run_automation_pipeline(
@@ -434,6 +498,9 @@ def api_pipeline_run(payload: PipelineRunRequest) -> dict[str, Any]:
             rebuild=payload.rebuild,
             eval_count=payload.eval_count,
             eval_limit=payload.eval_limit,
+            eval_audit_count=payload.eval_audit_count,
+            eval_audit_limit=payload.eval_audit_limit,
+            enable_eval_audit=payload.enable_eval_audit,
             enable_paddleocr=payload.enable_paddleocr,
             enable_hyper_extract=payload.enable_hyper_extract,
             enable_llm_review=payload.enable_llm_review,

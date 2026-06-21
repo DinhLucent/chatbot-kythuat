@@ -1,6 +1,6 @@
 {
-  "schema_version": "baxter_eval_seed_v1",
-  "generated_at": "2026-06-21T13:33:25+00:00",
+  "schema_version": "baxter_eval_seed_v2",
+  "generated_at": "2026-06-21T17:44:06+00:00",
   "case_count": 96,
   "doc_types": [
     "checklist",
@@ -12,9 +12,10 @@
   "cases": [
     {
       "case_id": "baxter_seed_001",
-      "question": "PrisMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "PrisMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -22,26 +23,38 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_002",
-      "question": "Quy trình service PrisMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service PrisMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_003",
-      "question": "Tìm thông tin PM checklist của PrisMax.",
+      "question": "Tim thong tin PM checklist cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "maintenance"
       ],
       "expected_model": "PrisMax",
@@ -49,55 +62,80 @@
       "expected_terms": [
         "pm",
         "maintenance"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_004",
-      "question": "PrisMax SW 3.1 có tài liệu nào liên quan?",
+      "question": "PrisMax SW 3.1 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_005",
-      "question": "Thông số kỹ thuật quan trọng của PrisMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua PrisMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_006",
-      "question": "So sánh tài liệu service manual và operator manual của PrisMax.",
+      "question": "So sanh service manual va operator manual cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_007",
-      "question": "Lỗi Access Pressure trên PrisMax xử lý thế nào?",
+      "question": "Loi Access Pressure tren PrisMax xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -106,50 +144,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_008",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service PrisMax?",
+      "question": "Co canh bao an toan nao can doc truoc khi service PrisMax?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
+      "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_009",
-      "question": "Mã tài liệu F8003 nói về nội dung gì?",
+      "question": "Ma tai lieu F8003 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_010",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_011",
-      "question": "Prismaflex có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "Prismaflex co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -157,82 +221,116 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_012",
-      "question": "Quy trình service Prismaflex khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service Prismaflex khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "Prismaflex",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_013",
-      "question": "Tìm thông tin PM checklist của Prismaflex.",
-      "expected_behavior": "answer_with_citation",
+      "question": "Tim thong tin PM checklist cua Prismaflex.",
+      "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "maintenance"
       ],
-      "expected_model": "Prismaflex",
+      "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": [
-        "pm",
-        "maintenance"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_014",
-      "question": "Prismaflex SW 8.X có tài liệu nào liên quan?",
+      "question": "Prismaflex SW 8.X co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_015",
-      "question": "Thông số kỹ thuật quan trọng của Prismaflex nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua Prismaflex nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_016",
-      "question": "So sánh tài liệu service manual và operator manual của Prismaflex.",
+      "question": "So sanh service manual va operator manual cua Prismaflex.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_017",
-      "question": "Lỗi Access Pressure trên Prismaflex xử lý thế nào?",
+      "question": "Loi Access Pressure tren Prismaflex xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -241,50 +339,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_018",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service Prismaflex?",
+      "question": "Co canh bao an toan nao can doc truoc khi service Prismaflex?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "Prismaflex",
-      "expected_doc_type": "service_manual",
+      "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_019",
-      "question": "Mã tài liệu L8099 nói về nội dung gì?",
+      "question": "Ma tai lieu L8099 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_020",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_021",
-      "question": "TherMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "TherMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -292,82 +416,116 @@
       "expected_doc_type": null,
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_022",
-      "question": "Quy trình service TherMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service TherMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
-      "expected_terms": [
-        "service"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_023",
-      "question": "Tìm thông tin PM checklist của TherMax.",
-      "expected_behavior": "answer_with_citation",
+      "question": "Tim thong tin PM checklist cua TherMax.",
+      "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "maintenance"
       ],
-      "expected_model": "TherMax",
+      "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": [
-        "pm",
-        "maintenance"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_024",
-      "question": "TherMax SW 3.5 có tài liệu nào liên quan?",
+      "question": "TherMax SW 3.5 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_025",
-      "question": "Thông số kỹ thuật quan trọng của TherMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua TherMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
-        "thong so"
-      ]
+        "specification"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_026",
-      "question": "So sánh tài liệu service manual và operator manual của TherMax.",
+      "question": "So sanh service manual va operator manual cua TherMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_027",
-      "question": "Lỗi Access Pressure trên TherMax xử lý thế nào?",
+      "question": "Loi Access Pressure tren TherMax xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -376,50 +534,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_028",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service TherMax?",
+      "question": "Co canh bao an toan nao can doc truoc khi service TherMax?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_029",
-      "question": "Mã tài liệu L8089 nói về nội dung gì?",
+      "question": "Ma tai lieu L8089 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_030",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_031",
-      "question": "PrisMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "PrisMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -427,26 +611,38 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_032",
-      "question": "Quy trình service PrisMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service PrisMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_033",
-      "question": "Tìm thông tin PM checklist của PrisMax.",
+      "question": "Tim thong tin PM checklist cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "maintenance"
       ],
       "expected_model": "PrisMax",
@@ -454,55 +650,80 @@
       "expected_terms": [
         "pm",
         "maintenance"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_034",
-      "question": "PrisMax SW 3.1 có tài liệu nào liên quan?",
+      "question": "PrisMax SW 3.1 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_035",
-      "question": "Thông số kỹ thuật quan trọng của PrisMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua PrisMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_036",
-      "question": "So sánh tài liệu service manual và operator manual của PrisMax.",
+      "question": "So sanh service manual va operator manual cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_037",
-      "question": "Lỗi Access Pressure trên PrisMax xử lý thế nào?",
+      "question": "Loi Access Pressure tren PrisMax xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -511,50 +732,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_038",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service PrisMax?",
+      "question": "Co canh bao an toan nao can doc truoc khi service PrisMax?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
+      "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_039",
-      "question": "Mã tài liệu L8154 nói về nội dung gì?",
+      "question": "Ma tai lieu L8154 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_040",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_041",
-      "question": "Prismaflex có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "Prismaflex co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -562,82 +809,116 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_042",
-      "question": "Quy trình service Prismaflex khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service Prismaflex khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "Prismaflex",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_043",
-      "question": "Tìm thông tin PM checklist của Prismaflex.",
-      "expected_behavior": "answer_with_citation",
+      "question": "Tim thong tin PM checklist cua Prismaflex.",
+      "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "maintenance"
       ],
-      "expected_model": "Prismaflex",
+      "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": [
-        "pm",
-        "maintenance"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_044",
-      "question": "Prismaflex SW 8.X có tài liệu nào liên quan?",
+      "question": "Prismaflex SW 8.X co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_045",
-      "question": "Thông số kỹ thuật quan trọng của Prismaflex nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua Prismaflex nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_046",
-      "question": "So sánh tài liệu service manual và operator manual của Prismaflex.",
+      "question": "So sanh service manual va operator manual cua Prismaflex.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_047",
-      "question": "Lỗi Access Pressure trên Prismaflex xử lý thế nào?",
+      "question": "Loi Access Pressure tren Prismaflex xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -646,50 +927,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_048",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service Prismaflex?",
+      "question": "Co canh bao an toan nao can doc truoc khi service Prismaflex?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "Prismaflex",
-      "expected_doc_type": "service_manual",
+      "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_049",
-      "question": "Mã tài liệu L7123 nói về nội dung gì?",
+      "question": "Ma tai lieu L7123 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_050",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_051",
-      "question": "TherMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "TherMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -697,82 +1004,116 @@
       "expected_doc_type": null,
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_052",
-      "question": "Quy trình service TherMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service TherMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
-      "expected_terms": [
-        "service"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_053",
-      "question": "Tìm thông tin PM checklist của TherMax.",
-      "expected_behavior": "answer_with_citation",
+      "question": "Tim thong tin PM checklist cua TherMax.",
+      "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "maintenance"
       ],
-      "expected_model": "TherMax",
+      "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": [
-        "pm",
-        "maintenance"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_054",
-      "question": "TherMax SW 3.5 có tài liệu nào liên quan?",
+      "question": "TherMax SW 3.5 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_055",
-      "question": "Thông số kỹ thuật quan trọng của TherMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua TherMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
-        "thong so"
-      ]
+        "specification"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_056",
-      "question": "So sánh tài liệu service manual và operator manual của TherMax.",
+      "question": "So sanh service manual va operator manual cua TherMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_057",
-      "question": "Lỗi Access Pressure trên TherMax xử lý thế nào?",
+      "question": "Loi Access Pressure tren TherMax xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -781,50 +1122,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_058",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service TherMax?",
+      "question": "Co canh bao an toan nao can doc truoc khi service TherMax?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_059",
-      "question": "Mã tài liệu L8084 nói về nội dung gì?",
+      "question": "Ma tai lieu L8084 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_060",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_061",
-      "question": "PrisMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "PrisMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -832,26 +1199,38 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_062",
-      "question": "Quy trình service PrisMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service PrisMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_063",
-      "question": "Tìm thông tin PM checklist của PrisMax.",
+      "question": "Tim thong tin PM checklist cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "maintenance"
       ],
       "expected_model": "PrisMax",
@@ -859,55 +1238,80 @@
       "expected_terms": [
         "pm",
         "maintenance"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_064",
-      "question": "PrisMax SW 3.1 có tài liệu nào liên quan?",
+      "question": "PrisMax SW 3.1 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_065",
-      "question": "Thông số kỹ thuật quan trọng của PrisMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua PrisMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_066",
-      "question": "So sánh tài liệu service manual và operator manual của PrisMax.",
+      "question": "So sanh service manual va operator manual cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_067",
-      "question": "Lỗi Access Pressure trên PrisMax xử lý thế nào?",
+      "question": "Loi Access Pressure tren PrisMax xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -916,50 +1320,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_068",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service PrisMax?",
+      "question": "Co canh bao an toan nao can doc truoc khi service PrisMax?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
+      "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_069",
-      "question": "Mã tài liệu L8103 nói về nội dung gì?",
+      "question": "Ma tai lieu L8103 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_070",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_071",
-      "question": "Prismaflex có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "Prismaflex co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -967,82 +1397,116 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_072",
-      "question": "Quy trình service Prismaflex khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service Prismaflex khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "Prismaflex",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_073",
-      "question": "Tìm thông tin PM checklist của Prismaflex.",
-      "expected_behavior": "answer_with_citation",
+      "question": "Tim thong tin PM checklist cua Prismaflex.",
+      "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "maintenance"
       ],
-      "expected_model": "Prismaflex",
+      "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": [
-        "pm",
-        "maintenance"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_074",
-      "question": "Prismaflex SW 8.X có tài liệu nào liên quan?",
+      "question": "Prismaflex SW 8.X co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_075",
-      "question": "Thông số kỹ thuật quan trọng của Prismaflex nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua Prismaflex nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_076",
-      "question": "So sánh tài liệu service manual và operator manual của Prismaflex.",
+      "question": "So sanh service manual va operator manual cua Prismaflex.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "Prismaflex",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_077",
-      "question": "Lỗi Access Pressure trên Prismaflex xử lý thế nào?",
+      "question": "Loi Access Pressure tren Prismaflex xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -1051,50 +1515,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_078",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service Prismaflex?",
+      "question": "Co canh bao an toan nao can doc truoc khi service Prismaflex?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "Prismaflex",
-      "expected_doc_type": "service_manual",
+      "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_079",
-      "question": "Mã tài liệu L7037 nói về nội dung gì?",
+      "question": "Ma tai lieu L7037 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_080",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_081",
-      "question": "TherMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "TherMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -1102,82 +1592,116 @@
       "expected_doc_type": null,
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_082",
-      "question": "Quy trình service TherMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service TherMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
-      "expected_terms": [
-        "service"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_083",
-      "question": "Tìm thông tin PM checklist của TherMax.",
-      "expected_behavior": "answer_with_citation",
+      "question": "Tim thong tin PM checklist cua TherMax.",
+      "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "maintenance"
       ],
-      "expected_model": "TherMax",
+      "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": [
-        "pm",
-        "maintenance"
-      ]
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_084",
-      "question": "TherMax SW 3.5 có tài liệu nào liên quan?",
+      "question": "TherMax SW 3.5 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_085",
-      "question": "Thông số kỹ thuật quan trọng của TherMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua TherMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
-        "thong so"
-      ]
+        "specification"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_086",
-      "question": "So sánh tài liệu service manual và operator manual của TherMax.",
+      "question": "So sanh service manual va operator manual cua TherMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_087",
-      "question": "Lỗi Access Pressure trên TherMax xử lý thế nào?",
+      "question": "Loi Access Pressure tren TherMax xu ly the nao?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "english_term"
       ],
@@ -1186,50 +1710,76 @@
       "expected_terms": [
         "access",
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_088",
-      "question": "Có cảnh báo an toàn nào cần đọc trước khi service TherMax?",
+      "question": "Co canh bao an toan nao can doc truoc khi service TherMax?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "safety"
       ],
       "expected_model": "TherMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "warning",
-        "caution",
         "service"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_089",
-      "question": "Mã tài liệu L8075 nói về nội dung gì?",
+      "question": "Ma tai lieu L8075 noi ve noi dung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "exact_code"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_090",
-      "question": "Máy pha cà phê báo lỗi E99 thì làm sao?",
+      "question": "May pha ca phe bao loi E99 thi lam sao?",
       "expected_behavior": "no_source",
       "tags": [
+        "seed",
         "out_of_scope"
       ],
       "expected_model": null,
       "expected_doc_type": null,
-      "expected_terms": []
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_091",
-      "question": "PrisMax có alarm liên quan áp lực thì kiểm tra những gì?",
+      "question": "PrisMax co alarm lien quan ap luc thi kiem tra nhung gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "alarm",
         "vi_en"
       ],
@@ -1237,26 +1787,38 @@
       "expected_doc_type": "service_manual",
       "expected_terms": [
         "pressure"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_092",
-      "question": "Quy trình service PrisMax khi thay linh kiện cần lưu ý gì?",
+      "question": "Quy trinh service PrisMax khi thay linh kien can luu y gi?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "service"
       ],
       "expected_model": "PrisMax",
-      "expected_doc_type": "service_manual",
-      "expected_terms": [
-        "service"
-      ]
+      "expected_doc_type": null,
+      "expected_terms": [],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_093",
-      "question": "Tìm thông tin PM checklist của PrisMax.",
+      "question": "Tim thong tin PM checklist cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "maintenance"
       ],
       "expected_model": "PrisMax",
@@ -1264,49 +1826,73 @@
       "expected_terms": [
         "pm",
         "maintenance"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_094",
-      "question": "PrisMax SW 3.1 có tài liệu nào liên quan?",
+      "question": "PrisMax SW 3.1 co tai lieu nao lien quan?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "software"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
         "sw"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_095",
-      "question": "Thông số kỹ thuật quan trọng của PrisMax nằm ở đâu?",
+      "question": "Thong so ky thuat quan trong cua PrisMax nam o dau?",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "spec"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "specification",
-        "technical",
         "thong so"
-      ]
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     },
     {
       "case_id": "baxter_seed_096",
-      "question": "So sánh tài liệu service manual và operator manual của PrisMax.",
+      "question": "So sanh service manual va operator manual cua PrisMax.",
       "expected_behavior": "answer_with_citation",
       "tags": [
+        "seed",
         "compare"
       ],
       "expected_model": "PrisMax",
       "expected_doc_type": null,
       "expected_terms": [
-        "service",
-        "operator"
-      ]
+        "service"
+      ],
+      "expected_doc_id": null,
+      "expected_chunk_id": null,
+      "expected_block_type": null,
+      "expected_doc_code": null,
+      "source_workspace_id": null,
+      "audit_basis": null
     }
   ]
 }

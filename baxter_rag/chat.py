@@ -275,7 +275,9 @@ def plan_query(
             filters: dict[str, Any] = {}
             model = overrides.get("model") or plan_res.model or session.model
             doc_type = overrides.get("doc_type") or plan_res.doc_type or session.doc_type
-            software_version = overrides.get("software_version") or plan_res.software_version or session.software_version
+            software_override = overrides.get("software_version")
+            software_version = software_override or plan_res.software_version or session.software_version
+            doc_code = detect_doc_code(question)
             alarm = plan_res.alarm_code
             
             if model and model in available_models:
@@ -284,9 +286,13 @@ def plan_query(
             if doc_type and doc_type in available_doc_types:
                 filters["doc_type"] = doc_type
                 session.doc_type = doc_type
-            if software_version:
-                filters["software_version"] = software_version
+            if software_override:
+                filters["software_version"] = software_override
+                session.software_version = software_override
+            elif software_version:
                 session.software_version = software_version
+            if doc_code:
+                filters["doc_code"] = doc_code
             if alarm:
                 session.current_alarm = alarm
                 
@@ -305,7 +311,7 @@ def plan_query(
                 "filters": filters,
                 "retrieval_query": plan_res.retrieval_query,
                 "needs_clarification": False,
-                "detected": {"model": model, "doc_type": doc_type, "software_version": software_version, "alarm": alarm},
+                "detected": {"model": model, "doc_type": doc_type, "software_version": software_version, "doc_code": doc_code, "alarm": alarm},
             }
         except Exception as exc:
             plan = plan_query_regex(settings, question, session, overrides)
@@ -326,7 +332,9 @@ def plan_query_regex(settings: Settings, question: str, session: ChatSession, ov
     auto_doc_type = None if question_type == "compare" else detect_doc_type(question)
     session_doc_type = None if question_type == "compare" else session.doc_type
     doc_type = overrides.get("doc_type") or auto_doc_type or session_doc_type
-    software_version = overrides.get("software_version") or detect_software_version(question) or session.software_version
+    software_override = overrides.get("software_version")
+    software_version = software_override or detect_software_version(question) or session.software_version
+    doc_code = detect_doc_code(question)
     alarm = detect_alarm(question)
     if model:
         filters["model"] = model
@@ -334,9 +342,13 @@ def plan_query_regex(settings: Settings, question: str, session: ChatSession, ov
     if doc_type:
         filters["doc_type"] = doc_type
         session.doc_type = doc_type
-    if software_version:
-        filters["software_version"] = software_version
+    if software_override:
+        filters["software_version"] = software_override
+        session.software_version = software_override
+    elif software_version:
         session.software_version = software_version
+    if doc_code:
+        filters["doc_code"] = doc_code
     if alarm:
         session.current_alarm = alarm
 
@@ -358,7 +370,7 @@ def plan_query_regex(settings: Settings, question: str, session: ChatSession, ov
         "filters": filters,
         "retrieval_query": expanded,
         "needs_clarification": False,
-        "detected": {"model": model, "doc_type": doc_type, "software_version": software_version, "alarm": alarm},
+        "detected": {"model": model, "doc_type": doc_type, "software_version": software_version, "doc_code": doc_code, "alarm": alarm},
     }
 
 
@@ -381,6 +393,10 @@ def detect_doc_type(question: str) -> str | None:
         return "service_manual"
     if "operator" in q or "huong dan van hanh" in q:
         return "operator_manual"
+    if "technical document" in q or "tai lieu ky thuat" in q:
+        return "technical_document"
+    if "checklist" in q:
+        return "checklist"
     if "addendum" in q or "phu luc" in q:
         return "addendum"
     return None
@@ -389,6 +405,11 @@ def detect_doc_type(question: str) -> str | None:
 def detect_software_version(question: str) -> str | None:
     match = re.search(r"\b(?:sw\s*)?(\d+(?:\.\d+|\.x|\.xx))\b", question, flags=re.IGNORECASE)
     return match.group(1).upper() if match else None
+
+
+def detect_doc_code(question: str) -> str | None:
+    match = re.search(r"\b(?:AW|G|L|F|SI)\d{4,7}\b", question, flags=re.IGNORECASE)
+    return match.group(0).upper() if match else None
 
 
 def detect_alarm(question: str) -> str | None:
@@ -416,7 +437,7 @@ def expand_query_terms(question: str) -> str:
     q = question
     expansions = {
         "lỗi": "alarm error troubleshooting corrective action",
-        "loi": "alarm error troubleshooting corrective action",
+        "loi": "alarm error troubleshooting possible cause",
         "xử lý": "troubleshooting corrective action service actions",
         "xu ly": "troubleshooting corrective action service actions",
         "access pressure": "access pressure excessive access pressure pressure alarms return pressure",
@@ -424,7 +445,8 @@ def expand_query_terms(question: str) -> str:
         "ap luc": "pressure access pressure return pressure",
         "bơm": "pump",
         "bom": "pump",
-        "thay": "replace remove install service",
+        "khac phuc": "troubleshooting corrective action remedy possible cause alarm",
+        "corrective action": "troubleshooting remedy possible cause alarm",
         "bảo trì": "maintenance PM checklist preventive",
         "bao tri": "maintenance PM checklist preventive",
         "hiệu chuẩn": "calibration calibrate",
@@ -436,8 +458,27 @@ def expand_query_terms(question: str) -> str:
     }
     q_norm = normalized_text(q)
     extra = [value for key, value in expansions.items() if normalized_text(key) in q_norm]
+    replacement_terms = ("thay", "replace", "remove", "install")
+    troubleshooting_terms = ("khac phuc", "corrective", "troubleshooting", "alarm", "loi", "error")
+    service_context_terms = ("service", "bao tri", "maintenance", "repair", "linh kien", "part")
+    if any(term in q_norm for term in replacement_terms):
+        if any(term in q_norm for term in service_context_terms) and not any(term in q_norm for term in troubleshooting_terms):
+            extra.append("replace remove install service procedure parts")
+        elif any(term in q_norm for term in troubleshooting_terms):
+            extra.append("corrective action remedy troubleshooting replace only if source instructs")
     if "service bulletin" not in q_norm and "tsb" not in q_norm:
-        service_terms = ("service", "bao tri", "maintenance", "repair", "thay", "replace")
+        service_terms = (
+            "authorized service",
+            "bao tri",
+            "calibration",
+            "hieu chuan",
+            "maintenance",
+            "pm",
+            "repair",
+            "service mode",
+            "service procedure",
+            "service technician",
+        )
         safety_terms = ("canh bao", "warning", "caution", "safety", "an toan")
         if any(term in q_norm for term in service_terms):
             extra.append("service manual maintenance repair service mode authorized service technician")

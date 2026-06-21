@@ -9,7 +9,7 @@ from typing import Any
 from .chat import ask
 from .conversion import convert_manifest
 from .enrichment import run_technical_enrichment
-from .evaluation import generate_seed_cases, run_eval
+from .evaluation import generate_seed_cases, run_eval, run_eval_audit
 from .inventory import run_inventory
 from .normalization import normalize_manifest
 from .ocr_retry import run_ocr_retry_candidates
@@ -65,6 +65,12 @@ def main(argv: list[str] | None = None) -> None:
     p_eval.add_argument("--cases-path")
     p_eval.add_argument("--limit", type=int)
 
+    p_eval_audit = sub.add_parser("eval-audit", help="Run index-derived random/workspace/policy answer audit")
+    p_eval_audit.add_argument("--count", type=int, default=144)
+    p_eval_audit.add_argument("--seed", type=int, default=20260621)
+    p_eval_audit.add_argument("--cases-path")
+    p_eval_audit.add_argument("--limit", type=int)
+
     p_pipeline_run = sub.add_parser("pipeline-run", help="Run guarded end-to-end automation pipeline")
     p_pipeline_run.add_argument("--relative-root", default="documents/IC/BAXTER")
     p_pipeline_run.add_argument("--profile")
@@ -72,6 +78,9 @@ def main(argv: list[str] | None = None) -> None:
     p_pipeline_run.add_argument("--doc-id")
     p_pipeline_run.add_argument("--eval-count", type=int, default=96)
     p_pipeline_run.add_argument("--eval-limit", type=int)
+    p_pipeline_run.add_argument("--eval-audit-count", type=int, default=144)
+    p_pipeline_run.add_argument("--eval-audit-limit", type=int)
+    p_pipeline_run.add_argument("--no-eval-audit", action="store_true")
     p_pipeline_run.add_argument("--no-rebuild", action="store_true")
     p_pipeline_run.add_argument("--enable-paddleocr", action="store_true")
     p_pipeline_run.add_argument("--enable-hyper-extract", action="store_true")
@@ -162,6 +171,16 @@ def main(argv: list[str] | None = None) -> None:
         emit(generate_seed_cases(settings, count=args.count))
     elif args.command == "eval-run":
         emit(run_eval(settings, cases_path=Path(args.cases_path) if args.cases_path else None, limit=args.limit))
+    elif args.command == "eval-audit":
+        emit(
+            run_eval_audit(
+                settings,
+                count=args.count,
+                seed=args.seed,
+                cases_path=Path(args.cases_path) if args.cases_path else None,
+                limit=args.limit,
+            )
+        )
     elif args.command == "pipeline-run":
         emit(
             run_automation_pipeline(
@@ -174,6 +193,9 @@ def main(argv: list[str] | None = None) -> None:
                     rebuild=not args.no_rebuild,
                     eval_count=args.eval_count,
                     eval_limit=args.eval_limit,
+                    eval_audit_count=args.eval_audit_count,
+                    eval_audit_limit=args.eval_audit_limit,
+                    enable_eval_audit=not args.no_eval_audit,
                     enable_paddleocr=True if args.enable_paddleocr else None,
                     enable_hyper_extract=True if args.enable_hyper_extract else None,
                     enable_llm_review=True if args.enable_llm_review else None,
@@ -247,6 +269,8 @@ def main(argv: list[str] | None = None) -> None:
         steps["enrichment"] = run_technical_enrichment(settings)
         steps["index"] = rebuild_index(settings)
         steps["eval_seed"] = generate_seed_cases(settings, count=96)
+        steps["eval_run"] = run_eval(settings)
+        steps["eval_audit"] = run_eval_audit(settings)
         emit({"ok": True, "steps": steps})
     elif args.command == "serve":
         from .api import main as serve_main

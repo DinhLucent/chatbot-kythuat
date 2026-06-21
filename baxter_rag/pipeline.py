@@ -11,7 +11,7 @@ from typing import Any, Callable
 
 from .conversion import convert_manifest, mineru_available
 from .enrichment import run_technical_enrichment
-from .evaluation import generate_seed_cases, run_eval
+from .evaluation import generate_seed_cases, run_eval, run_eval_audit
 from .inventory import run_inventory
 from .llm import DEFAULT_LLM_MODEL
 from .normalization import normalize_manifest
@@ -35,6 +35,9 @@ class PipelineOptions:
     rebuild: bool = True
     eval_count: int = 96
     eval_limit: int | None = None
+    eval_audit_count: int = 144
+    eval_audit_limit: int | None = None
+    enable_eval_audit: bool = True
     enable_paddleocr: bool | None = None
     enable_hyper_extract: bool | None = None
     enable_llm_review: bool | None = None
@@ -161,6 +164,12 @@ def run_automation_pipeline(settings: Settings, options: PipelineOptions | None 
             lambda: eval_run_stage(settings, options),
             required=False,
         )
+        if options.enable_eval_audit:
+            add_stage(
+                "eval_audit",
+                lambda: eval_audit_stage(settings, options),
+                required=False,
+            )
         add_stage(
             "deterministic_validator",
             lambda: deterministic_validator_stage(settings, run_dir),
@@ -238,6 +247,9 @@ def preflight_stage(settings: Settings, options: PipelineOptions) -> tuple[str, 
             "llm_model": os.getenv("LLM_MODEL", DEFAULT_LLM_MODEL),
             "llm_has_api_key": bool(os.getenv("LLM_API_KEY", "")),
             "llm_answer_qa_enabled": env_bool("LLM_ANSWER_QA_ENABLED", False),
+            "eval_audit_enabled": options.enable_eval_audit,
+            "eval_audit_count": options.eval_audit_count,
+            "eval_audit_seed": env_int("BAXTER_RAG_EVAL_AUDIT_SEED", 20260621),
             "apodex_enabled": option_enabled(options.enable_apodex, "APODEX_ENABLED"),
             "apodex_base_url": os.getenv("APODEX_BASE_URL", ""),
             "apodex_has_api_key": bool(os.getenv("APODEX_API_KEY", "")),
@@ -524,9 +536,27 @@ def eval_run_stage(settings: Settings, options: PipelineOptions) -> tuple[str, d
     return status, result, {"eval_latest": str(settings.root / "eval" / "baxter_eval_latest.json")}
 
 
+def eval_audit_stage(settings: Settings, options: PipelineOptions) -> tuple[str, dict[str, Any], dict[str, str]]:
+    seed = env_int("BAXTER_RAG_EVAL_AUDIT_SEED", 20260621)
+    result = run_eval_audit(
+        settings,
+        count=options.eval_audit_count,
+        seed=seed,
+        limit=options.eval_audit_limit,
+    )
+    failed = int(result.get("failed") or 0)
+    status = "passed" if failed == 0 and int(result.get("case_count") or 0) else "warning"
+    return status, result, {
+        "eval_audit_latest": str(settings.artifacts_dir / "evaluation" / "audit_latest.json"),
+        "eval_audit_cases": str(settings.artifacts_dir / "evaluation" / "audit_cases_latest.json"),
+        "eval_audit_root_cause": str(settings.artifacts_dir / "root_cause" / "audit_eval_latest_root_cause.json"),
+    }
+
+
 def deterministic_validator_stage(settings: Settings, run_dir: Path) -> tuple[str, dict[str, Any], dict[str, str]]:
     index_meta = read_json(settings.artifacts_dir / "index" / "index_meta.json", {})
     eval_latest = read_json(settings.root / "eval" / "baxter_eval_latest.json", {})
+    audit_latest = read_json(settings.artifacts_dir / "evaluation" / "audit_latest.json", {})
     missing_source = 0
     citation_count = 0
     for citation_path in sorted((settings.artifacts_dir / "normalized").glob("*/citation_map.json")):
@@ -540,17 +570,29 @@ def deterministic_validator_stage(settings: Settings, run_dir: Path) -> tuple[st
                 missing_source += 1
     eval_count = int(eval_latest.get("case_count") or 0)
     eval_failed = int(eval_latest.get("failed") or 0)
+    audit_count = int(audit_latest.get("case_count") or 0)
+    audit_failed = int(audit_latest.get("failed") or 0)
+    audit_pass_rate = float(audit_latest.get("pass_rate") or 0.0)
+    audit_min_pass_rate = env_float("BAXTER_RAG_EVAL_AUDIT_MIN_PASS_RATE", 0.9)
+    audit_root_cause_path = settings.artifacts_dir / "root_cause" / "audit_eval_latest_root_cause.json"
+    audit_root_cause_present = audit_root_cause_path.exists()
     summary = {
         "index_chunk_count": int(index_meta.get("chunk_count") or 0),
         "citation_count": citation_count,
         "missing_source_file_citations": missing_source,
         "eval_case_count": eval_count,
         "eval_failed": eval_failed,
+        "eval_audit_case_count": audit_count,
+        "eval_audit_failed": audit_failed,
+        "eval_audit_pass_rate": audit_pass_rate,
+        "eval_audit_min_pass_rate": audit_min_pass_rate,
+        "eval_audit_root_cause_present": audit_root_cause_present,
         "no_raw_document_external_upload": True,
     }
     path = run_dir / "deterministic_validator.json"
     write_json(path, {"generated_at": utc_now(), **summary})
-    status = "passed" if citation_count and not missing_source and not eval_failed else "warning"
+    audit_ready = audit_count and audit_pass_rate >= audit_min_pass_rate and audit_root_cause_present
+    status = "passed" if citation_count and not missing_source and not eval_failed and audit_ready else "warning"
     return status, summary, {"deterministic_validator": str(path)}
 
 
@@ -632,6 +674,7 @@ def collect_quality_snapshot(settings: Settings) -> dict[str, Any]:
     normalization = read_json(settings.artifacts_dir / "normalized" / "normalization_run_latest.json", {})
     index_meta = read_json(settings.artifacts_dir / "index" / "index_meta.json", {})
     eval_latest = read_json(settings.root / "eval" / "baxter_eval_latest.json", {})
+    audit_latest = read_json(settings.artifacts_dir / "evaluation" / "audit_latest.json", {})
     reports = load_quality_reports(settings)
     locator_ratios = [
         float(report.get("summary", {}).get("locator_ratio") or 0.0)
@@ -648,13 +691,21 @@ def collect_quality_snapshot(settings: Settings) -> dict[str, Any]:
         for key, value in gates.items():
             if value is False:
                 failed_gates[key] += 1
-    eval_count = int(eval_latest.get("case_count") or 0)
-    eval_passed = int(eval_latest.get("passed") or 0)
+    seed_eval_count = int(eval_latest.get("case_count") or 0)
+    seed_eval_passed = int(eval_latest.get("passed") or 0)
+    seed_eval_failed = int(eval_latest.get("failed") or 0)
+    audit_eval_count = int(audit_latest.get("case_count") or 0)
+    audit_eval_passed = int(audit_latest.get("passed") or 0)
+    audit_eval_failed = int(audit_latest.get("failed") or 0)
+    eval_count = seed_eval_count + audit_eval_count
+    eval_passed = seed_eval_passed + audit_eval_passed
     conversion_total = int(conversion.get("summary", {}).get("total") or 0)
     conversion_failed = int(conversion.get("summary", {}).get("failed") or 0)
     chunk_count = int(index_meta.get("chunk_count") or 0)
     avg_locator = sum(locator_ratios) / max(1, len(locator_ratios))
     eval_pass_rate = eval_passed / max(1, eval_count) if eval_count else None
+    seed_eval_pass_rate = seed_eval_passed / max(1, seed_eval_count) if seed_eval_count else None
+    audit_eval_pass_rate = audit_eval_passed / max(1, audit_eval_count) if audit_eval_count else None
     conversion_success_rate = (conversion_total - conversion_failed) / max(1, conversion_total) if conversion_total else None
     score = pipeline_quality_score(
         conversion_success_rate=conversion_success_rate,
@@ -677,8 +728,16 @@ def collect_quality_snapshot(settings: Settings) -> dict[str, Any]:
         "failed_quality_gates": dict(failed_gates),
         "eval_case_count": eval_count,
         "eval_passed": eval_passed,
-        "eval_failed": int(eval_latest.get("failed") or 0),
+        "eval_failed": seed_eval_failed + audit_eval_failed,
         "eval_pass_rate": round(eval_pass_rate, 4) if eval_pass_rate is not None else None,
+        "eval_seed_case_count": seed_eval_count,
+        "eval_seed_passed": seed_eval_passed,
+        "eval_seed_failed": seed_eval_failed,
+        "eval_seed_pass_rate": round(seed_eval_pass_rate, 4) if seed_eval_pass_rate is not None else None,
+        "eval_audit_case_count": audit_eval_count,
+        "eval_audit_passed": audit_eval_passed,
+        "eval_audit_failed": audit_eval_failed,
+        "eval_audit_pass_rate": round(audit_eval_pass_rate, 4) if audit_eval_pass_rate is not None else None,
         "pipeline_quality_score": score,
     }
 
@@ -758,6 +817,8 @@ def write_report_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Status: `{report.get('status')}`",
         f"- Pipeline quality score: `{final.get('pipeline_quality_score')}`",
         f"- Eval pass rate: `{final.get('eval_pass_rate')}`",
+        f"- Seed eval: `{final.get('eval_seed_passed')}/{final.get('eval_seed_case_count')}`",
+        f"- Audit eval: `{final.get('eval_audit_passed')}/{final.get('eval_audit_case_count')}`",
         f"- Index chunks: `{final.get('index_chunk_count')}`",
         "",
         "## Quality Change",
@@ -781,6 +842,8 @@ def write_report_markdown(path: Path, report: dict[str, Any]) -> None:
             note = f"converted={summary.get('summary', {}).get('converted')} failed={summary.get('summary', {}).get('failed')}"
         if not note and stage.get("name") == "eval_run":
             note = f"passed={summary.get('passed')} failed={summary.get('failed')}"
+        if not note and stage.get("name") == "eval_audit":
+            note = f"passed={summary.get('passed')} failed={summary.get('failed')} pass_rate={summary.get('pass_rate')}"
         lines.append(f"| `{stage.get('name')}` | `{stage.get('status')}` | `{stage.get('duration_seconds')}` | {note} |")
     lines.extend(
         [
@@ -831,6 +894,17 @@ def assess_quality_change(
     score_delta = comparison.get("pipeline_quality_score_delta")
     eval_delta = comparison.get("eval_pass_rate_delta")
     used_any_optional = any(optional_used.values())
+    audit_stage = next((stage for stage in stages if stage.name == "eval_audit"), None)
+    if audit_stage and audit_stage.status == "warning":
+        return {
+            "verdict": "expanded_qa_found_risks",
+            "reason": "The index-derived audit found answer, retrieval, metadata, or citation failures. Review the audit root-cause report before widening usage.",
+        }
+    if audit_stage and audit_stage.status == "passed":
+        return {
+            "verdict": "expanded_qa_passed",
+            "reason": "Seed eval and index-derived audit both passed, including workspace and policy cases.",
+        }
     if isinstance(eval_delta, (int, float)) and eval_delta > 0:
         return {
             "verdict": "measured_answer_quality_improved",
@@ -926,6 +1000,26 @@ def env_bool(name: str, default: bool) -> bool:
     if raw is None or not raw.strip():
         return default
     return raw.strip().lower() not in {"0", "false", "no", "off"}
+
+
+def env_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default
+
+
+def env_float(name: str, default: float) -> float:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    try:
+        return float(raw)
+    except ValueError:
+        return default
 
 
 def has_any_env(*names: str) -> bool:

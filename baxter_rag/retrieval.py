@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 from collections import Counter
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -106,13 +107,14 @@ def search(
     candidates = [chunk for chunk in chunks if matches_filters(chunk, filters)]
     if not candidates:
         return []
+    scoring_query = software_token_forms(query)
     bm25 = BM25([str(chunk.get("retrieval_text") or chunk.get("content") or "") for chunk in candidates])
-    query_dense = hash_embedding(query)
+    query_dense = hash_embedding(scoring_query)
     dense_ranked: list[tuple[int, float]] = []
     sparse_ranked: list[tuple[int, float]] = []
     for index, chunk in enumerate(candidates):
         dense_ranked.append((index, cosine(query_dense, chunk.get("dense_vector") or [])))
-        sparse_ranked.append((index, bm25.score(query, index)))
+        sparse_ranked.append((index, bm25.score(scoring_query, index)))
     dense_sorted = sorted(dense_ranked, key=lambda item: item[1], reverse=True)
     sparse_sorted = sorted(sparse_ranked, key=lambda item: item[1], reverse=True)
     dense_rank = {idx: rank for rank, (idx, _score) in enumerate(dense_sorted, start=1)}
@@ -121,8 +123,9 @@ def search(
     sparse_scores = dict(sparse_ranked)
     fused = rrf(dense_sorted, sparse_sorted)
 
+    candidate_window = min(len(fused), max(limit * 10, 96))
     hits: list[SearchHit] = []
-    for fused_rank, (idx, score) in enumerate(fused[: max(limit * 3, limit)], start=1):
+    for fused_rank, (idx, score) in enumerate(fused[:candidate_window], start=1):
         chunk = candidates[idx]
         boosts = metadata_boosts(query, chunk, filters)
         final_score = score + sum(boosts.values())
@@ -153,7 +156,14 @@ def load_chunks(settings: Settings) -> list[dict[str, Any]]:
 
 
 def retrieval_text(chunk: dict[str, Any]) -> str:
-    parts = [str(chunk.get("content") or "")]
+    metadata_parts = [
+        str(chunk.get("model") or ""),
+        str(chunk.get("doc_type") or "").replace("_", " "),
+        str(chunk.get("doc_code") or ""),
+        str(chunk.get("block_type") or "").replace("_", " "),
+        " ".join(str(item) for item in (chunk.get("section_path") or []) if item),
+    ]
+    parts = [" ".join(part for part in metadata_parts if part.strip()), str(chunk.get("content") or "")]
     summary = str(chunk.get("semantic_summary") or "").strip()
     if summary:
         parts.append(f"LLM retrieval summary: {summary}")
@@ -181,22 +191,105 @@ def matches_filters(chunk: dict[str, Any], filters: dict[str, Any]) -> bool:
 def metadata_boosts(query: str, chunk: dict[str, Any], filters: dict[str, Any]) -> dict[str, float]:
     boosts: dict[str, float] = {}
     q = normalized_text(query)
-    for key, weight in (("model", 0.08), ("doc_type", 0.05), ("software_version", 0.08), ("doc_code", 0.16)):
+    for key, weight in (("model", 0.18), ("doc_type", 0.12), ("software_version", 0.18), ("doc_code", 0.75)):
         value = str(chunk.get(key) or "")
         if value and normalized_text(value) in q:
             boosts[key] = weight
         if filters.get(key) and str(filters[key]).lower() == value.lower():
             boosts[f"filter_{key}"] = max(boosts.get(key, 0.0), weight)
     block_type = str(chunk.get("block_type") or "")
+    block_label = normalized_text(block_type.replace("_", " "))
+    software_intent = any(term in q for term in ("software note", "software", "version guidance", "sw ", "release", "revision"))
+    corrective_intent = any(term in q for term in ("corrective", "khac phuc", "repair", "remedy"))
+    maintenance_intent = any(term in q for term in ("bao tri", "maintenance", "pm checklist", "preventive maintenance"))
+    if block_label and block_label in q:
+        boosts["block_type"] = 0.18
     if "alarm" in q and block_type == "alarm_code":
-        boosts["alarm_block"] = 0.12
-    if any(term in q for term in ("bao tri", "maintenance", "pm checklist")) and block_type == "maintenance_step":
-        boosts["maintenance_block"] = 0.1
+        boosts["alarm_block"] = 0.3
+    if any(term in q for term in ("symptom", "behavior", "hien tuong")) and block_type == "troubleshooting_symptom":
+        boosts["troubleshooting_symptom_block"] = 0.42
+    if any(term in q for term in ("cause", "nguyen nhan", "possible cause")) and block_type == "troubleshooting_cause":
+        boosts["troubleshooting_cause_block"] = 0.24
+    if corrective_intent and block_type == "troubleshooting_fix":
+        boosts["troubleshooting_fix_block"] = 0.4
+    if any(term in q for term in ("troubleshooting", "corrective", "khac phuc", "possible cause")) and block_type.startswith("troubleshooting_"):
+        boosts["troubleshooting_block"] = 0.12
+    if maintenance_intent and block_type == "maintenance_step" and not software_intent:
+        boosts["maintenance_block"] = 0.36
+    if any(term in q for term in ("service procedure", "remove", "install", "replace", "replacement")) and block_type == "service_step" and not maintenance_intent:
+        boosts["service_step_block"] = 0.36
     if any(term in q for term in ("hieu chuan", "calibration")) and block_type == "calibration_step":
-        boosts["calibration_block"] = 0.1
+        boosts["calibration_block"] = 0.18
     if any(term in q for term in ("canh bao", "safety", "warning")) and block_type == "warning_safety":
-        boosts["safety_block"] = 0.1
+        boosts["safety_block"] = 0.18
+    if software_intent and block_type == "software_note":
+        boosts["software_block"] = 0.36
+    overlap = technical_term_overlap(query, chunk)
+    if overlap:
+        boosts["term_overlap"] = min(0.35, 0.035 * overlap)
     return boosts
+
+
+def technical_term_overlap(query: str, chunk: dict[str, Any]) -> int:
+    stopwords = {
+        "about",
+        "action",
+        "behavior",
+        "does",
+        "document",
+        "for",
+        "from",
+        "give",
+        "guidance",
+        "guide",
+        "information",
+        "manual",
+        "note",
+        "say",
+        "service",
+        "symptom",
+        "tell",
+        "technical",
+        "the",
+        "version",
+        "what",
+        "with",
+        "trong",
+        "cua",
+        "cho",
+        "noi",
+        "tai",
+        "ve",
+    }
+    normalized_query = normalized_text(query)
+    about_marker = " about "
+    term_source = normalized_query.split(about_marker, 1)[1] if about_marker in normalized_query else normalized_query
+    term_source = software_token_forms(term_source)
+    metadata_terms = set(tokenize(chunk.get("model") or ""))
+    metadata_terms.update(tokenize(chunk.get("doc_code") or ""))
+    metadata_terms.update(tokenize(chunk.get("doc_type") or ""))
+    query_terms = {
+        term
+        for term in tokenize(term_source)
+        if len(term) >= 3 and term not in stopwords and term not in metadata_terms
+    }
+    if not query_terms:
+        return 0
+    content_terms = set(tokenize(chunk.get("content") or ""))
+    return len(query_terms & content_terms)
+
+
+def software_token_forms(query: str) -> str:
+    normalized_query = normalized_text(query)
+    extras: list[str] = []
+    for match in re.finditer(r"\bsw\s*([0-9]+(?:[._-][0-9x]+)+)\b", normalized_query):
+        version = match.group(1).replace("_", ".").replace("-", ".")
+        extras.append(f"sw{version}")
+        extras.append(f"sw {version}")
+        extras.append(f"software version {version}")
+    if not extras:
+        return query
+    return " ".join([query, *extras])
 
 
 def rrf(*rankings: list[tuple[int, float]], k: int = 60) -> list[tuple[int, float]]:

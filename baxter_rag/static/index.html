@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baxter IC Technical RAG</title>
+    <link rel="icon" href="/static/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-lockup">
+          <div class="brand-mark">
+            <img src="/static/logo.png" alt="Baxter IC RAG Logo" class="brand-logo-img" />
+          </div>
+          <div class="brand-copy">
+            <h1>Baxter IC RAG</h1>
+            <p id="runtimeSummary">Loading runtime</p>
+          </div>
+          <button class="icon-only" id="collapseBtn" type="button" title="Sidebar">
+            <i data-lucide="panel-left"></i>
+          </button>
+        </div>
+
+        <div class="search-row">
+          <label class="search-box" for="searchInput">
+            <i data-lucide="search"></i>
+            <input id="searchInput" placeholder="Search" autocomplete="off" />
+          </label>
+          <button class="icon-only strong" id="newThreadTopBtn" type="button" title="New thread">
+            <i data-lucide="plus"></i>
+          </button>
+        </div>
+
+        <nav class="workspace-list" id="workspaceList" aria-label="Workspaces"></nav>
+
+        <button class="new-thread-button" id="newThreadBtn" type="button">
+          <i data-lucide="plus"></i>
+          <span>New Thread</span>
+        </button>
+
+        <div class="sidebar-footer">
+          <button class="footer-button" id="inventoryBtn" type="button" title="Inventory">
+            <i data-lucide="folder-search"></i>
+          </button>
+          <button class="footer-button" id="indexBtn" type="button" title="Rebuild index">
+            <i data-lucide="database-zap"></i>
+          </button>
+          <button class="footer-button" id="settingsBtn" type="button" title="Settings">
+            <i data-lucide="settings"></i>
+          </button>
+          <button class="footer-button" id="clearThreadBtn" type="button" title="Clear thread">
+            <i data-lucide="rotate-ccw"></i>
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-stage">
+        <section class="chat-frame" aria-label="Chat">
+          <header class="chat-header">
+            <div class="chat-header-left">
+              <button class="icon-only compact" id="showSidebarBtn" type="button" title="Show Sidebar">
+                <i data-lucide="panel-left"></i>
+              </button>
+              <div>
+                <div class="scope-header-group">
+                  <span class="status-dot green" title="Local runtime"></span>
+                  <div class="scope-label" id="activeWorkspaceLabel">PrisMax</div>
+                </div>
+                <div class="scope-meta" id="activeThreadLabel">New Thread</div>
+              </div>
+            </div>
+            <button class="icon-only" id="sourcePanelBtn" type="button" title="Sources">
+              <i data-lucide="sliders-horizontal"></i>
+            </button>
+          </header>
+
+          <div class="thread" id="thread"></div>
+
+          <section class="source-panel" id="sourcePanel" hidden>
+            <div class="source-heading">
+              <strong>Source Preview</strong>
+              <button class="icon-only compact" id="closeSourceBtn" type="button" title="Close">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <pre id="sourcePreview"></pre>
+          </section>
+
+          <div class="empty-state" id="emptyState">
+            <div class="empty-state-content">
+              <h2>Ask Baxter IC manuals</h2>
+              <div class="quick-actions">
+                <button class="quick-action-card" id="quickActionAgent" type="button">
+                  <i data-lucide="bot"></i>
+                  <span>AI Provider</span>
+                </button>
+                <button class="quick-action-card" id="quickActionWorkspace" type="button">
+                  <i data-lucide="scan-search"></i>
+                  <span>Workspace Scope</span>
+                </button>
+                <button class="quick-action-card" id="quickActionUpload" type="button">
+                  <i data-lucide="database"></i>
+                  <span>Data / Index</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <form class="composer" id="chatForm">
+            <textarea id="questionInput" rows="3" placeholder="Ask from the selected Baxter source workspace"></textarea>
+            <div class="composer-actions">
+              <button class="tool-button" id="sourcesHintBtn" type="button">
+                <i data-lucide="book-open"></i>
+                <span id="selectedScopeChip">PrisMax</span>
+              </button>
+              <button class="send-button" type="submit" title="Send">
+                <i data-lucide="arrow-up"></i>
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div class="settings-backdrop" id="settingsDialog" hidden>
+      <section class="settings-shell" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <aside class="settings-nav" aria-label="Settings">
+          <div class="settings-brand">
+            <strong id="settingsTitle">Settings</strong>
+            <span>Source-backed Baxter runtime</span>
+          </div>
+          <button class="settings-tab active" data-tab="llm" type="button">
+            <i data-lucide="bot"></i>
+            <span>AI Provider</span>
+          </button>
+          <button class="settings-tab" data-tab="retrieval" type="button">
+            <i data-lucide="scan-search"></i>
+            <span>Retrieval</span>
+          </button>
+          <button class="settings-tab" data-tab="data" type="button">
+            <i data-lucide="database"></i>
+            <span>Data / Index</span>
+          </button>
+        </aside>
+        <div class="settings-main">
+          <header class="settings-header">
+            <div>
+              <h2 id="settingsPanelTitle">AI Provider</h2>
+              <p id="settingsPanelSubtitle">OpenAI-compatible LLM endpoint for grounded answer stages.</p>
+            </div>
+            <button class="icon-only compact" id="closeSettingsBtn" type="button" title="Close settings">
+              <i data-lucide="x"></i>
+            </button>
+          </header>
+          <div class="settings-panel" id="settingsPanel"></div>
+        </div>
+      </section>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
